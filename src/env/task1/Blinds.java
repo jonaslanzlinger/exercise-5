@@ -10,7 +10,7 @@ public class Blinds extends Artifact {
 
     ArtifactId illuminanceSensorId;
 
-    public void init(){
+    public void init() {
         defineObsProperty("blinds", "lowered");
     }
 
@@ -23,8 +23,8 @@ public class Blinds extends Artifact {
 
             try {
                 ArtifactId illuminanceSensorId = lookupArtifact("illuminance_sensor");
-                execLinkedOp(illuminanceSensorId,"increase", 400);
-            } catch (Exception ex){
+                execLinkedOp(illuminanceSensorId, "increase", 400);
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -39,8 +39,8 @@ public class Blinds extends Artifact {
 
             try {
                 ArtifactId illuminanceSensorId = lookupArtifact("illuminance_sensor");
-                execLinkedOp(illuminanceSensorId,"decrease", 400);
-            } catch (Exception ex){
+                execLinkedOp(illuminanceSensorId, "decrease", 400);
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -54,8 +54,8 @@ public class Blinds extends Artifact {
 
             try {
                 ArtifactId illuminanceSensorId = lookupArtifact("illuminance_sensor");
-                execLinkedOp(illuminanceSensorId,"decrease", 400);
-            } catch (Exception ex){
+                execLinkedOp(illuminanceSensorId, "decrease", 400);
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }

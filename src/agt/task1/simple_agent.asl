@@ -2,17 +2,19 @@
 
 /* Initial rules */
 /* Task 1.2.3 Start of your solution */
+even(X) :- X mod 2 = 0.
+odd(X) :- X mod 2 = 1.
 /* Task 1.2.3 End of your solution */
 
 /* Initial goals */
-!start_sum(4,2). // uncomment for Task 1.2.1
-!start_sum(4,-2). // uncomment for Task 1.2.1
-//!start_division(4,2). // uncomment for Task 1.2.2
-//!start_division(4,2.5). // uncomment for Task 1.2.2
-//!start_division(4,0). // uncomment for Task 1.2.2
-//!start_even_or_odd(4). // uncomment for Task 1.2.3
-//!start_even_or_odd(5). // uncomment for Task 1.2.3
-//!start_list_generation(0,4). // uncomment for Task 1.2.4
+// !start_sum(4,2). // uncomment for Task 1.2.1
+// !start_sum(4,-2). // uncomment for Task 1.2.1
+// !start_division(4,2). // uncomment for Task 1.2.2
+// !start_division(4,2.5). // uncomment for Task 1.2.2
+// !start_division(4,0). // uncomment for Task 1.2.2
+// !start_even_or_odd(4). // uncomment for Task 1.2.3
+// !start_even_or_odd(5). // uncomment for Task 1.2.3
+!start_list_generation(0,4). // uncomment for Task 1.2.4
 //!print_list([0,1,2,3,4]). // uncomment for an example of handling a list with recursion
 
 /* 
@@ -29,7 +31,8 @@
 /* Task 1.2.1 Start of your solution */
 @compute_sum_task_1_2_1_plan
 +!compute_sum(X,Y,Sum) : true <-
-    .print("Implement Task 1.2.1").
+    .print("Implement Task 1.2.1");
+    Sum = X + Y.
 /* Task 1.2.1 End of your solution */
 
 @start_division_task_1_2_2_plan
@@ -38,6 +41,13 @@
     .print(Dividend, "/", Divisor, "=", Quotient).
 
 /* Task 1.2.2 Start of your solution */
+@compute_division_divisor_0_task_1_2_2_plan
++!compute_division(Dividend,Divisor,Quotient) : Divisor = 0 <-
+    Quotient = "Division by 0 is not allowed".
+
+@compute_division_divisor_not_0_task_1_2_2_plan
++!compute_division(Dividend,Divisor,Quotient) : true <-
+    Quotient = Dividend / Divisor.
 /* Task 1.2.2 End of your solution */
 
 /* 
@@ -93,6 +103,13 @@
 
 /* Task 1.2.4 Start of your solution */
 // You are allowed to use a triggering event other than the one provided 
+@compute_list_1_2_4_plan
++!compute_list(Start, End, TempList, List) : Start <= End <-
+    !compute_list(Start, End-1, [End | TempList], List).
+
++!compute_list(Start, End, TempList, List) : true <-
+    List = TempList;
+    .print("all elements have been added to the list").
 /* Task 1.2.4 End of your solution */
 
 /* 

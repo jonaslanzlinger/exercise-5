@@ -3,15 +3,15 @@
 /* Initial rules */
 
 // Inference rule for infering the belief requires_brightening if the target illuminance is higher than the current illuminance
-requires_brightening :- target_illuminance(Target) & current_illuminance(Current) & Target  > Current.
+requires_brightening :- target_illuminance(Target) & current_illuminance(Current) & Target >= Current + 100.
 
 // Inference rule for infering the belief requires_darkening if the target illuminance is lower than the current illuminance
-requires_darkening :- target_illuminance(Target) & current_illuminance(Current) & Target < Current.
+requires_darkening :- target_illuminance(Target) & current_illuminance(Current) & Target <= Current - 100.
 
 /* Initial beliefs */
 
 // The agent believes that the target illuminance is 400 lux
-target_illuminance(400).
+target_illuminance(350).
 
 /* Initial goals */
 
@@ -30,6 +30,18 @@ target_illuminance(400).
     .wait(4000);
     !manage_illuminance; // creates the goal !manage_illuminance
     !start.
+
+// plan for lowering the blinds if the blinds are raised and the weather is cloudy
+@lower_blinds_if_cloudy_plan
+-weather("sunny") : blinds("raised") <-
+    .print("Lowering the blinds");
+    lowerBlinds. // performs the action of lowering the blinds
+
+// plan for brightening the room using the blinds if the weather is sunny
+@increase_illuminance_with_blinds_if_sunny_plan
++!manage_illuminance : weather("sunny") & requires_brightening <-
+    .print("Raising the blinds");
+    raiseBlinds. // performs the action of raising the blinds
 
 /* 
  * Plan for reacting to the addition of the goal !manage_illuminance
@@ -74,6 +86,12 @@ target_illuminance(400).
 +!manage_illuminance:  blinds("raised") & requires_darkening <-
     .print("Lowering the blinds");
     lowerBlinds. // performs the action of lowering the blinds
+
+// plan for the case: current illuminance is equal to the target illuminance
+@current_illuminance_equals_target_illuminance_plan
++!manage_illuminance : true <-
+    .print("Design objective as been achieved.").
+
 
 /* 
  * Plan for reacting to the addition of the belief current_illuminance(Current)
