@@ -2,14 +2,15 @@
 
 /* Initial rules */
 
+// Task_1_1_4
 // Inference rule for infering the belief requires_brightening if the target illuminance is higher than the current illuminance
-requires_brightening :- target_illuminance(Target) & current_illuminance(Current) & Target >= Current + 100.
-
+requires_brightening :- target_illuminance(Target) & current_illuminance(Current) & Target-100 >= Current.
 // Inference rule for infering the belief requires_darkening if the target illuminance is lower than the current illuminance
-requires_darkening :- target_illuminance(Target) & current_illuminance(Current) & Target <= Current - 100.
+requires_darkening :- target_illuminance(Target) & current_illuminance(Current) & Target+100 <= Current.
 
 /* Initial beliefs */
 
+// Task_1_1_4
 // The agent believes that the target illuminance is 400 lux
 target_illuminance(350).
 
@@ -31,15 +32,14 @@ target_illuminance(350).
     !manage_illuminance; // creates the goal !manage_illuminance
     !start.
 
-// plan for lowering the blinds if the blinds are raised and the weather is cloudy
-@lower_blinds_if_cloudy_plan
--weather("sunny") : blinds("raised") <-
-    .print("Lowering the blinds");
-    lowerBlinds. // performs the action of lowering the blinds
+// Task_1.1.1
+@no_brightening_no_darkening_required_plan
++!manage_illuminance : not requires_brightening & not requires_darkening <-
+    .print("Design objective as been achieved.").
 
-// plan for brightening the room using the blinds if the weather is sunny
+// Task_1_1_2
 @increase_illuminance_with_blinds_if_sunny_plan
-+!manage_illuminance : weather("sunny") & requires_brightening <-
++!manage_illuminance : blinds("lowered") & weather("sunny") & requires_brightening <-
     .print("Raising the blinds");
     raiseBlinds. // performs the action of raising the blinds
 
@@ -72,7 +72,7 @@ target_illuminance(350).
  * Body: the agent performs the action of raising the blinds
 */
 @increase_illuminance_with_blinds_plan
-+!manage_illuminance : blinds("lowered") &  requires_brightening <-
++!manage_illuminance : blinds("lowered") & requires_brightening <-
     .print("Raising the blinds");
     raiseBlinds. // performs the action of raising the blinds
 
@@ -87,11 +87,11 @@ target_illuminance(350).
     .print("Lowering the blinds");
     lowerBlinds. // performs the action of lowering the blinds
 
-// plan for the case: current illuminance is equal to the target illuminance
-@current_illuminance_equals_target_illuminance_plan
-+!manage_illuminance : true <-
-    .print("Design objective as been achieved.").
-
+// Task_1_1_3
+@lower_blinds_if_not_sunny_plan
+-weather("sunny") : blinds("raised") <-
+    .print("Lowering the blinds");
+    lowerBlinds. // performs the action of lowering the blinds
 
 /* 
  * Plan for reacting to the addition of the belief current_illuminance(Current)
