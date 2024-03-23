@@ -11,13 +11,25 @@ best_option(Number) :- Number = 0.
 +lights(State) : true <-
    .print("Lights are ", State).
 
+-lights(State) : true <-
+   .print("Lights are ", State).
+
 +blinds(State) : true <-
+   .print("Blinds are ", State).
+
+-blinds(State) : true <-
    .print("Blinds are ", State).
 
 +mattress(State) : true <-
    .print("Mattress is ", State).
 
+-mattress(State) : true <-
+   .print("Mattress is ", State).
+
 +wristband(State) : true <-
+   .print("Wristband is ", State).
+
+-wristband(State) : true <-
    .print("Wristband is ", State).
 
 +upcoming_event("now") : owner_state("awake") <-
